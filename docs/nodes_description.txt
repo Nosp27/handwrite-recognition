@@ -1,0 +1,3 @@
+Role 1 (Face):              Nginx, Static files, frontend
+Role 2 (Back-end executor): Web-backend (Python, aiohttp)
+Role 3 (ML Executor):       Queue-consumer, ML Model Process (RabbitMQ, Pytorch/Tensorflow)
