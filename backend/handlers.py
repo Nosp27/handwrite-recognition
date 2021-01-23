@@ -3,14 +3,14 @@ import aiohttp.web
 import aiohttp.web_request
 from uuid import uuid4
 
-from mqueue.producer import send_image_to_mq
+from .producer import send_image_to_mq
 
 statuses = {}  # replace with KV Store
 
 
 async def handle_image_submit(request: aiohttp.web_request.Request):
     data = (await request.json())["image"]
-    request_id = uuid4()
+    request_id = uuid4().hex
 
     await send_image_to_mq(data, request_id)
 

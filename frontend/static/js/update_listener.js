@@ -2,7 +2,7 @@ let myid = "";
 
 onmessage = function (e) {
     myid = e.data[0];
-    listen_for_updates();
+    listen_for_updates().then(res => postMessage([myid, res]));
 };
 
 async function sleep(ms) {
@@ -21,11 +21,12 @@ async function ajax_update() {
     return jsonResp["content"];
 }
 
-function listen_for_updates() {
+async function listen_for_updates() {
     let checkResult = null;
-    // while (checkResult === null) {
-    //     await sleep(3000);
-    //     checkResult = await ajax_update();
-    // }
-    postMessage(["asd"]);
+    while (checkResult === null) {
+        await sleep(3000);
+        checkResult = await ajax_update();
+        if (checkResult)
+            return checkResult
+    }
 }

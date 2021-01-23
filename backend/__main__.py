@@ -14,15 +14,12 @@ def start():
     app = aiohttp.web.Application()
     app.add_routes(
         [
-            aiohttp.web.post("/image_submit", handlers.handle_image_submit),
-            aiohttp.web.get("/status", handlers.status),
-            aiohttp.web.post("/status", handlers.update_status),
+            aiohttp.web.post("/api/image_submit", handlers.handle_image_submit),
+            aiohttp.web.get("/api/status", handlers.status),
+            aiohttp.web.post("/api/status", handlers.update_status),
         ]
     )
-
-    print("Start")
     aiohttp.web.run_app(app, port=8080)
-    print("Done")
 
 
 if __name__ == '__main__':

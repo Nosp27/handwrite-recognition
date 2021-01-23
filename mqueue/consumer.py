@@ -11,7 +11,7 @@ async def consumer_got_image(message: aio_pika.IncomingMessage):
         async with aiohttp.ClientSession() as session:
             predicted_text = await session.post("http://ml/predict", json={"image": image})
             await session.post(
-                "http://backend/status", json={"request_id": request_id, "result": predicted_text}
+                "http://backend/api/status", json={"request_id": request_id, "result": predicted_text}
             )
 
 

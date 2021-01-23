@@ -3,7 +3,7 @@ let worker = null;
 function initWorker() {
     worker = new Worker("static/js/update_listener.js");
     worker.addEventListener("message", function (e) {
-        const content = e.data[0];
+        const content = e.data[1];
         $("#message-place").innerText = content;
         worker.terminate();
     });
@@ -12,23 +12,21 @@ function initWorker() {
 async function formSubmit(e) {
     e.preventDefault();
 
-    const requestId = generateRequestId();
-
     if (!window.File || !window.FileReader || !window.FileList || !window.Blob) {
         alert('The File APIs are not fully supported in this browser.');
         return;
     }
 
     const file = document.getElementById("image").files[0];
-
-    await uploadFile(file, requestId);
+    
+    const result = await uploadFile(file);
 
     initWorker();
-    worker.postMessage([requestId]);
+    worker.postMessage([result["request_id"]]);
     document.getElementById("message-place").innerText = "Loading...";
 }
 
-async function uploadFile(file, requestId) {
+async function uploadFile(file) {
     return new Promise(
         (resolve, reject) => {
             const reader = new FileReader();
@@ -37,7 +35,7 @@ async function uploadFile(file, requestId) {
             reader.onload = () => {
                 const data = reader.result;
 
-                fetch("/image_submit", {
+                fetch("api/image_submit", {
                         method: "POST",
                         body: JSON.stringify({"image": data})
                     }
@@ -50,8 +48,4 @@ async function uploadFile(file, requestId) {
             };
         }
     )
-}
-
-function generateRequestId() {
-    return "123";
 }
