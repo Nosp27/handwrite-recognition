@@ -1,5 +1,6 @@
 FROM python
 COPY . /ml
-RUN pip install -r /ml/requirements.txt
-EXPOSE 8080
+RUN pip install -r /ml/requirements.txt && \
+    mkdir /logs
+EXPOSE 1234
 ENTRYPOINT ["python", "-m", "ml", "start"]
