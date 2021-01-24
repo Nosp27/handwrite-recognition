@@ -1,7 +1,6 @@
-from ml import handlers
-
 import click as click
 
+from ml import consumer
 
 @click.group()
 def main():
@@ -10,7 +9,7 @@ def main():
 
 @main.command()
 def start():
-    handlers.app.run(port=1234)
+    consumer.listen_queue()
 
 
 if __name__ == '__main__':

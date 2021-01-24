@@ -13,20 +13,25 @@ async function sleep(ms) {
 }
 
 async function ajax_update() {
-    const resp = await fetch(`/status/?id=${myid}`);
+    const resp = await fetch(`/api/status/?request_id=${myid}`);
     const jsonResp = await resp.json();
     if (jsonResp["status"] !== "fine") {
         return null;
     }
-    return jsonResp["content"];
+    return jsonResp["result"];
 }
 
 async function listen_for_updates() {
     let checkResult = null;
     while (checkResult === null) {
         await sleep(3000);
-        checkResult = await ajax_update();
-        if (checkResult)
-            return checkResult
+        try {
+            checkResult = await ajax_update();
+            if (checkResult)
+                return checkResult
+        }
+        catch (err) {
+            console.error(`Could not load status. (id=${myid})`, err);
+        }
     }
 }

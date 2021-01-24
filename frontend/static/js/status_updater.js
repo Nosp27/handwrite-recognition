@@ -4,7 +4,7 @@ function initWorker() {
     worker = new Worker("static/js/update_listener.js");
     worker.addEventListener("message", function (e) {
         const content = e.data[1];
-        $("#message-place").innerText = content;
+        document.getElementById("message-place").innerText = content;
         worker.terminate();
     });
 }
@@ -20,6 +20,9 @@ async function formSubmit(e) {
     const file = document.getElementById("image").files[0];
     
     const result = await uploadFile(file);
+    if (!result) {
+        throw new Error("Request id cannot be resolved from response");
+    }
 
     initWorker();
     worker.postMessage([result["request_id"]]);
@@ -35,7 +38,7 @@ async function uploadFile(file) {
             reader.onload = () => {
                 const data = reader.result;
 
-                fetch("api/image_submit", {
+                fetch("api/image_submit/", {
                         method: "POST",
                         body: JSON.stringify({"image": data})
                     }
