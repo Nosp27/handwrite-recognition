@@ -1,5 +1,3 @@
-import logging
-
 from backend import handlers
 
 import click as click
@@ -14,7 +12,7 @@ def main():
 @main.command()
 def start():
     app = aiohttp.web.Application()
-    app["STATUSES"] = {}  # replace with KV Store
+    app["STATUSES"] = {}  # TODO: replace with KV Store
     app.add_routes(
         [
             aiohttp.web.get("/api/", handlers.welcome_request),
