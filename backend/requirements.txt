@@ -10,3 +10,4 @@ itsdangerous==1.1.0
 multidict==5.1.0
 pamqp==2.3.0
 typing-extensions==3.7.4.3
+pytest

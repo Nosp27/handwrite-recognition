@@ -15,7 +15,7 @@ async function sleep(ms) {
 async function ajax_update() {
     const resp = await fetch(`/api/status/?request_id=${myid}`);
     const jsonResp = await resp.json();
-    if (jsonResp["status"] !== "fine") {
+    if (jsonResp["status"] !== "done") {
         return null;
     }
     return jsonResp["result"];

@@ -1,7 +1,9 @@
-from backend import handlers
+from backend import app
 
 import click as click
 import aiohttp.web
+
+from backend.producer import RabbitMQProducer
 
 
 @click.group()
@@ -11,17 +13,8 @@ def main():
 
 @main.command()
 def start():
-    app = aiohttp.web.Application()
-    app["STATUSES"] = {}  # TODO: replace with KV Store
-    app.add_routes(
-        [
-            aiohttp.web.get("/api/", handlers.welcome_request),
-            aiohttp.web.post("/api/image_submit/", handlers.handle_image_submit),
-            aiohttp.web.get("/api/status/", handlers.status),
-            aiohttp.web.post("/api/status/", handlers.update_status),
-        ]
-    )
-    aiohttp.web.run_app(app, port=8080)
+    web_app = app.create_app(RabbitMQProducer())
+    aiohttp.web.run_app(web_app, port=8080)
 
 
 if __name__ == '__main__':

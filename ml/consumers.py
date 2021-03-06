@@ -29,7 +29,7 @@ class Consumer:
         predicted_text = self.model.predict(image)
         logger.debug(f"Sending status update for {request_id}...")
         requests.post(
-            "http://backend:8080/api/status/", json={"request_id": request_id, "predicted_text": predicted_text}
+            "http://backend:8080/api/status/", json={"request_id": request_id, "result": predicted_text}
         )
         logger.debug(f"Status updated for {request_id}")
 
