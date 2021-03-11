@@ -15,18 +15,18 @@ async function sleep(ms) {
 async function ajax_update() {
     const resp = await fetch(`/api/status/?request_id=${myid}`);
     const jsonResp = await resp.json();
-    if (jsonResp["status"] !== "done") {
-        return null;
-    }
-    return jsonResp["result"];
+    if (jsonResp["result"] !== undefined)
+        return jsonResp["result"];
+    return jsonResp["status"];
 }
 
 async function listen_for_updates() {
-    let checkResult = null;
-    while (checkResult === null) {
+    let checkResult = "";
+    while (checkResult !== "done") {
         await sleep(3000);
         try {
             checkResult = await ajax_update();
+            console.log(checkResult);
             if (checkResult)
                 return checkResult
         }

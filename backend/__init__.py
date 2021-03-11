@@ -1,9 +1,10 @@
 import logging
 
 QUEUE_NAME = "image_queue"
-MQ_ENDPOINT = "queue:5672"
+MQ_ENDPOINT = "queue"
 ML_HOST = "ml"
 
-
-if not __debug__:
+try:
     logging.basicConfig(filename="/logs/backend.log", level=logging.DEBUG)
+except:
+    pass

@@ -4,4 +4,7 @@ QUEUE_NAME = "image_queue"
 MQ_ENDPOINT = "queue"
 ML_HOST = "ml"
 
-logging.basicConfig(filename="/logs/ml.log", level=logging.DEBUG)
+try:
+    logging.basicConfig(filename="/logs/ml.log", level=logging.DEBUG)
+except:
+    logging.basicConfig(filename="/tmp/ml.log", level=logging.DEBUG)

@@ -26,12 +26,14 @@ def main():
         "Config passed to ML model"
     ),
 )
-def start(model_classname, config_file):
+def start(model, config_file):
     if os.path.isfile(config_file):
+        print(f"Opened config at {config_file}")
         config = json.load(open(config_file))
     else:
         config = None
-    consumer = consumers.Consumer(model_classname, config)
+        print(f"No config")
+    consumer = consumers.Consumer(model, config)
     consumer.listen_queue()
 
 

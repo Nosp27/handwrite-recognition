@@ -7,3 +7,4 @@ idna==2.10
 itsdangerous==1.1.0
 typing-extensions==3.7.4.3
 requests==2.25.1
+pytesseract==0.3.7
