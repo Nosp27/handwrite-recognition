@@ -18,6 +18,9 @@ function initWorker() {
         }
         document.getElementById("status-place").innerText = status;
         if (status === "done") {
+            document.getElementById("status-place").classList.add("status-success");
+            document.getElementById("status-place").classList.remove("status-error");
+            
             document.getElementById("message-holder").hidden = false;
             document.getElementById("message-place").innerText = result;
             worker.terminate();
@@ -42,8 +45,13 @@ async function formSubmit(e) {
     if (!result) {
         throw new Error("Request id cannot be resolved from response");
     }
-
-    initWorker();
+    try {
+        initWorker(); 
+    } catch (e) {
+         document.getElementById("status-place").innerText = "Error: " + e || e.message + ";";
+         document.getElementById("status-place").classList.remove("status-success");
+         document.getElementById("status-place").classList.add("status-error");
+    }
     worker.postMessage([result["request_id"]]);
 }
 
@@ -76,8 +84,10 @@ async function uploadFile(file, lang) {
                         }
                     })
                     .catch(x => {
-                        document.getElementById("status-place")
-                            .innerText = "Error: " + resp.status + ";" + resp.text();
+                        document.getElementById("status-place").innerText = "Error: " + resp.status + ";" + resp.text();
+                        document.getElementById("status-place").classList.remove("status-success");
+                        document.getElementById("status-place").classList.add("status-error");
+                    
                         console.exception(e);
                         console.error("Server returned: " + resp.status + "; " + resp.text());
                         reject(x);
