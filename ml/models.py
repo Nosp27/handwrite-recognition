@@ -1,5 +1,8 @@
+import base64
 import time
 import abc
+from io import BytesIO
+
 import pytesseract
 from PIL import Image
 
@@ -25,6 +28,6 @@ class TestModel(BaseModel):
 
 class TesseractModel(BaseModel):
     def predict(self, data, lang) -> str:
-        img = Image.open(data["image"])
-        result = pytesseract.image_to_string(img, lang=data["lang"])
+        img = Image.open(BytesIO(base64.decodebytes(data.split(",", 2)[-1].encode())))
+        result = pytesseract.image_to_string(img, lang=lang)
         return result 

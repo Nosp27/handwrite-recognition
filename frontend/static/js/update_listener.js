@@ -2,7 +2,7 @@ let myid = "";
 
 onmessage = function (e) {
     myid = e.data[0];
-    listen_for_updates().then(res => postMessage([myid, res]));
+    listen_for_updates();
 };
 
 async function sleep(ms) {
@@ -14,24 +14,21 @@ async function sleep(ms) {
 
 async function ajax_update() {
     const resp = await fetch(`/api/status/?request_id=${myid}`);
-    const jsonResp = await resp.json();
-    if (jsonResp["result"] !== undefined)
-        return jsonResp["result"];
-    return jsonResp["status"];
+    if (resp.status === 200)
+        return await resp.json();
+    throw new Error("Server returned " + resp.status);
 }
 
 async function listen_for_updates() {
-    let checkResult = "";
-    while (checkResult !== "done") {
+    let checkResult = {"status": ""};
+    while (checkResult["status"] !== "done") {
         await sleep(3000);
         try {
             checkResult = await ajax_update();
-            console.log(checkResult);
-            if (checkResult)
-                return checkResult
         }
         catch (err) {
-            console.error(`Could not load status. (id=${myid})`, err);
+            checkResult = {"status": "unknown", "error": err.toString()}
         }
+        postMessage([myid, checkResult]);
     }
 }

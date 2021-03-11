@@ -24,22 +24,18 @@ class Consumer:
         config = config or {}
         self.model = model_cls(**config)
 
-    def consumer_got_image(self, message):
+    def parse_message(self, message):
         print("Got image")
-        message_data = pickle.loads(message)
+        return pickle.loads(message)
+
+    def consumer_got_image(self, message_data):
         image = message_data["image"]
         request_id = message_data["request_id"]
         lang = message_data["lang"]
-        requests.post(
-            "http://backend:8080/api/status/", json={"request_id": request_id, "status": "processing"}
-        )
+        self.notify_backend(request_id=request_id, status="processing")
         predicted_text = self.model.predict(image, lang)
         logger.debug(f"Sending status update for {request_id}...")
-        response = requests.post(
-            "http://backend:8080/api/status/", json={"request_id": request_id, "result": predicted_text}
-        )
-        response.raise_for_status()
-        assert response.json()["status"] == "captured"
+        self.notify_backend(request_id=request_id, status="done", result=predicted_text)
         logger.debug(f"Status updated for {request_id}")
 
     def connect_to_mq(self, max_retries=5):
@@ -64,12 +60,25 @@ class Consumer:
         try:
             logger.debug("Listening queue")
             for method_frame, properties, body in channel.consume(QUEUE_NAME):
+                message_data = {}
                 try:
-                    self.consumer_got_image(body)
+                    message_data = self.parse_message(body)
+                    self.consumer_got_image(message_data)
                     channel.basic_ack(method_frame.delivery_tag)
                     logger.debug("Processed message from queue")
                 except Exception as exc:
                     logger.exception("Could not process queue message", exc_info=(type(exc), exc, None))
+                    self.notify_backend(
+                        request_id=message_data.get("request_id", "unknown"),
+                        status=f"ML error: {type(exc)} {str(exc)}",
+                    )
         finally:
             logger.warning("Closing connection to queue. exit.")
             connection.close()
+
+    def notify_backend(self, request_id, status, **kwargs):
+        response = requests.post(
+            "http://backend:8080/api/status/", json={"request_id": request_id, "status": status, **kwargs}
+        )
+        response.raise_for_status()
+        assert response.json()["status"] == "captured"

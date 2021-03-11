@@ -4,9 +4,24 @@ function initWorker() {
     worker = new Worker("static/js/update_listener.js");
     worker.addEventListener("message", function (e) {
         const content = e.data[1];
-        console.log("Update status: " + content);
-        document.getElementById("message-place").innerText = content;
-        worker.terminate();
+        const error = content["error"];
+        if (error !== undefined) {
+            throw error;
+        }
+        const status = content["status"];
+        const result = content["result"];
+        if (status === "done" && result === undefined) {
+            throw new Error("Error: Supplied done status with no result");
+        }
+        if (status === undefined) {
+            throw new Error("Status undefined");
+        }
+        document.getElementById("status-place").innerText = status;
+        if (status === "done") {
+            document.getElementById("message-holder").hidden = false;
+            document.getElementById("message-place").innerText = result;
+            worker.terminate();
+        }
     });
 }
 
@@ -18,10 +33,11 @@ async function formSubmit(e) {
         return;
     }
 
+    document.getElementById("status-place").innerText = "Loading...";
+    document.getElementById("message-holder").hidden = true;
     const file = document.getElementById("image").files[0];
     const lang = document.getElementById("lang").value;
-    
-    document.getElementById("message-place").innerText = "Loading...";
+
     const result = await uploadFile(file, lang);
     if (!result) {
         throw new Error("Request id cannot be resolved from response");
@@ -34,14 +50,14 @@ async function formSubmit(e) {
 async function uploadFile(file, lang) {
     return new Promise(
         (resolve, reject) => {
-            const timeout = setTimeout(function(){
-                didTimeOut=true;
+            const timeout = setTimeout(function () {
+                didTimeOut = true;
                 document.getElementById("message-place").innerText = "Timeout Error.";
                 reject(new Error("Request timeout"));
             }, 60000);
 
             const reader = new FileReader();
-            reader.readAsText(file);
+            reader.readAsDataURL(file);
 
             reader.onload = () => {
                 const data = reader.result;
@@ -53,10 +69,17 @@ async function uploadFile(file, lang) {
                 )
                     .then(resp => {
                         clearTimeout(timeout);
-                        const resp_json = resp.json();
-                        resolve(resp_json);
+                        try {
+                            const resp_json = resp.json();
+                            resolve(resp_json);
+                        } catch (e) {
+                        }
                     })
                     .catch(x => {
+                        document.getElementById("status-place")
+                            .innerText = "Error: " + resp.status + ";" + resp.text();
+                        console.exception(e);
+                        console.error("Server returned: " + resp.status + "; " + resp.text());
                         reject(x);
                     });
             };

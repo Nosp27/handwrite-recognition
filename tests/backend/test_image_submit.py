@@ -26,7 +26,7 @@ async def test_image_submit(aiohttp_client, producer):
     producer.fut.set_result(mock_send_image_to_mq)
 
     client = await aiohttp_client(create_app(producer))
-    response = await client.post("/api/image_submit/", json={"image": "001010101010"})
+    response = await client.post("/api/image_submit/", json={"image": "001010101010", "lang": "eng"})
     response.raise_for_status()
     json_data = await response.json()
 
@@ -34,6 +34,7 @@ async def test_image_submit(aiohttp_client, producer):
     args, kwargs = mock_send_image_to_mq.call_args
     assert args[0] == "001010101010"
     assert args[1] == json_data["request_id"]
+    assert args[2] == "eng"
 
 
 @pytest.mark.parametrize(
