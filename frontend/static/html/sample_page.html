@@ -1,6 +1,8 @@
 <!DOCTYPE html>
 <html>
 <head>
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css2?family=Bad+Script&family=Caveat:wght@700&family=Manrope:wght@300&family=Poiret+One&display=swap" rel="stylesheet">
     <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
     <script rel="script" type="application/javascript" src="static/js/status_updater.js"></script>
     <link rel="stylesheet" 
@@ -17,29 +19,136 @@
             integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
             crossorigin="anonymous"></script>
     <title>Handwrite Recognition</title>
+    <style>
+	.container {
+	    border: #123456 1px solid;
+	    padding: 20px;
+	    border-radius: 20px;
+            margin: 40px auto;
+            width: 750px;
+	    background: #E7F2F2;
+	    font: 15pt 'Manrope', sans-serif;
+	}
+
+	.status-initial {
+	    opacity: 0.6;
+	    width: fit-content;
+	}
+
+	.status-success {
+	    color: green;
+	}
+
+	.status-error {
+	    color: red;
+	}
+	html,body {
+	    background: #62C4C4;	
+	}
+	#submit-btn {
+	    background: #008B8B;
+	    border: solid 1px #008B8B;
+	    color: white;
+	    border-radius: 7px;
+	    padding: 2px 11px;
+	    cursor: pointer;
+	    margin: 13px;
+	}
+	#lang {
+	    background: #008B8B;
+	    border: solid 1px #008B8B;
+	    color: white;
+	    border-radius: 7px;
+	    padding: 2px 11px;
+	    opacity: 0.6;
+	    cursor: pointer;
+	}
+	#image {
+	    display: none;
+	}
+	.file-button {
+	    background: #008B8B;
+	    border: solid 1px #008B8B;
+	    color: white;
+	    border-radius: 7px;
+	    padding: 2px 11px;	
+	    width: fit-content;
+	    cursor: pointer;
+	}
+	.header {
+	    background: white;
+	    height: 100px;
+	    font: 50pt 'Caveat', cursive;  
+	    padding: 10px;
+	    border: solid 1px #008B8B;
+	    border-radius: 7px;
+	    background: #E7F2F2;
+	}
+	.description {
+	    color: white;
+	    font: 20pt Bradley Hand;
+	    text-align: center;
+	    padding: 60px 30px 10px 30px;
+	}
+	#project-name {
+	    font: 30pt 'Caveat', cursive;  
+	}
+	#project-name desc {
+	    font: 18pt 'Manrope', sans-serif;
+	}
+	.form-bottom {
+	    display: flex;
+	    justify-content: flex-end;	
+	}
+        #status-place {
+	    flex: 0 0 auto;
+	}
+    </style>
 </head>
 <body>
+<div class="header">
+TextRec
+</div>
+<div class="description">
+<div id="project-name">TextRec<desc> - проект, который позволит тебе забыть о бессоных ночах, проведенных за переводом лекций в электронный формат! <br>
+Теперь каждый текст, написанный тобой от руки, может быть с легкостью конвертирован в машинный текст. <br>
+Просто попробуй!</desc>
+</div>
+</div>
 <div class="container">
     <form action="" enctype="multipart/form-data" method="post">
-        <label for="image">Choose image with handwritten text:</label><br>
-        <input type="file" alt="image_input" id="image" name="image_input"><br>
-        <br>
-        <label for="image">Choose text's language:</label><br>
+        <label for="image">Выбери фотографию:</label><br>
+	<div class="file-button" id="file" float="right">
+	    Загрузить
+	</div>
+	<div id="file-name"></div>
+        <input type="file" alt="image_input" id="image" name="image_input">
+	<br>
+        <label for="image">Выбери язык текста:</label><br>
         <select name="lang" id="lang">
             <option value="eng">
                 English
             </option>
             <option value="italian">
-                Italian
+                Русский
             </option>
         </select><br>
         <br>
-        <input type="submit" onclick="formSubmit(event)" value="Send" id="submit-btn">
-        <span id="status-place" class="card-body status-initial">Click Send to see status...</span>
+	<div class="form-bottom">
+	    <span id="status-place" class="card-body status-initial">Тыкай -></span>
+	    <input type="submit" onclick="formSubmit(event)" value="Распознать!" id="submit-btn">
+        </div>
     </form>
-    <div class="card" style="width: 350px; margin: 3px" id="message-holder" hidden>
+    <div class="card" style="width: 350px; margin: 23px 0 0 0;" id="message-holder" hidden>
         <div id="message-place" class="card-body"></div>
     </div>
 </div>
+<script>
+document.getElementById('file').addEventListener('click', () => {document.getElementById('image').click()})
+
+document.getElementById('image').addEventListener('change', (e) => {document.getElementById('file-name').innerHTML = e.target.files
+ && e.target.files[0]
+ && e.target.files[0].name})
+</script>
 </body>
 </html>
