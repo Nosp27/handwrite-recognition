@@ -20,3 +20,11 @@ services:
     container_name: handwrite_recognition_mq
     ports:
       - "5672:5672"
+  psql:
+    image: postgres
+    container_name: handwrite_recognition_psql
+    ports:
+      - "5432:5432"
+    environment:
+      - POSTGRES_USER=psql
+      - POSTGRES_PASSWORD=somepassword
