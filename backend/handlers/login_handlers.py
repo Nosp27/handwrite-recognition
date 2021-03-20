@@ -4,6 +4,7 @@ import aiohttp.web_request
 import logging
 
 from backend import psql_connector
+from backend.psql_connector import UserExistsError
 
 logger = logging.getLogger()
 
@@ -31,7 +32,7 @@ async def handler_login(request: aiohttp.web_request.Request):
 
     connector = psql_connector.get_psql_connector_from_app(app)
 
-    if not connector.users.check_credentials(username, auth_basic_token):
+    if not await connector.users.check_credentials(username, auth_basic_token):
         raise aiohttp.web.HTTPUnauthorized()
 
     return aiohttp.web.json_response({"status": "access granted"})
@@ -46,11 +47,12 @@ async def handler_sign_up(request: aiohttp.web_request.Request):
 
     connector = psql_connector.get_psql_connector_from_app(app)
 
-    if connector.users.check_username_exists(username):
+    try:
+        await connector.users.add_user(username, auth_basic_token)
+    except UserExistsError as exc:
         raise aiohttp.web.HTTPConflict(reason="Username already exists")
 
-    if len(auth_basic_token) != 64:
-        raise aiohttp.web.HTTPBadRequest()
+    if len(auth_basic_token) != 64 and len(auth_basic_token):
+        raise aiohttp.web.HTTPBadRequest(reason="Wrong hash format")
 
-    connector.users.add_user(username, auth_basic_token)
     return aiohttp.web.json_response({"status": "access granted"})
