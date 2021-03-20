@@ -29,7 +29,9 @@ async def status(request: aiohttp.web_request.Request):
     try:
         request_id = request.query["request_id"]
     except KeyError as err:
-        return aiohttp.web.json_response({"error": type(err).__name__, "reason": str(err)}, status=400)
+        return aiohttp.web.json_response(
+            {"error": type(err).__name__, "reason": str(err)}, status=400
+        )
 
     statuses = request.app["STATUSES"]
 
@@ -39,7 +41,9 @@ async def status(request: aiohttp.web_request.Request):
     result = current_status.get("result")
     logger.debug(f"Checked status for {request_id}. Result: {current_status['status']}")
     if result:
-        return aiohttp.web.json_response({"status": current_status["status"], "result": result})
+        return aiohttp.web.json_response(
+            {"status": current_status["status"], "result": result}
+        )
     return aiohttp.web.json_response({"status": current_status["status"]}, status=200)
 
 
@@ -51,8 +55,13 @@ async def update_status(request: aiohttp.web_request.Request):
     if "result" in data:
         new_status = "done"
         predicted_text = data.get("result")
-        request.app["STATUSES"][request_id] = {"status": "done", "result": predicted_text}
-        logger.debug(f"Updating status for {request_id}. Status: {new_status}. Result: {predicted_text}")
+        request.app["STATUSES"][request_id] = {
+            "status": "done",
+            "result": predicted_text,
+        }
+        logger.debug(
+            f"Updating status for {request_id}. Status: {new_status}. Result: {predicted_text}"
+        )
     else:
         new_status = data.get("status", "unknown")
         request.app["STATUSES"][request_id] = {"status": new_status}

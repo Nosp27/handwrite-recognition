@@ -5,6 +5,6 @@ MQ_ENDPOINT = "queue"
 ML_HOST = "ml"
 
 try:
-    logging.basicConfig(filename="/logs/backend.log", level=logging.DEBUG)
+    logging.basicConfig(filename="/tmp/backend.log", level=logging.DEBUG)
 except:
     pass
