@@ -52,8 +52,8 @@ async def test_image_submit(aiohttp_client, producer):
         ),
         (
                 "some_req_id",
-                {"request_id": "some_req_id", "result": None},
-                {"status": "processing"}
+                {"request_id": "some_req_id", "status": "custom"},
+                {"status": "custom"}
         ),
     ]
 )

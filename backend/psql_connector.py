@@ -17,7 +17,7 @@ class Connector:
         user="psql",
         database="postgres",
         password="somepassword",
-        host="localhost",
+        host="psql",
         port=5432
     )
 
