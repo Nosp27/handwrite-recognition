@@ -5,7 +5,9 @@ from backend.handlers import image_handlers, login_handlers
 
 
 def create_app(producer):
-    app = aiohttp.web.Application()
+    app = aiohttp.web.Application(middlewares=[
+        aiohttp.web.normalize_path_middleware()
+    ])
 
     app["PRODUCER"] = producer
     app["STATUSES"] = {}  # TODO: replace with KV Store
