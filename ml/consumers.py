@@ -7,9 +7,11 @@ import pickle
 from . import models
 import requests
 import logging
+import random
 
 
 logger = logging.getLogger("consumer")
+random_number = random.randint(0, 1000)
 
 
 class Consumer:
@@ -77,6 +79,8 @@ class Consumer:
             connection.close()
 
     def notify_backend(self, request_id, status, **kwargs):
+        with open("/tmp/x.log", "a") as f:
+            f.write(f"{time.time()} executor #{random_number}\n")
         response = requests.post(
             "http://backend:8080/api/status/", json={"request_id": request_id, "status": status, **kwargs}
         )
