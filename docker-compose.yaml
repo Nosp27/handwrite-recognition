@@ -12,11 +12,9 @@ services:
       - "8080:8080"
   ml:
     build: ./ml
-    container_name: handwrite_recognition_ml
     environment:
       - TESSDATA_PREFIX=/ml/share/tessdata
-    ports:
-      - "1234:1234"
+    scale: 5
   queue:
     image: rabbitmq
     container_name: handwrite_recognition_mq
