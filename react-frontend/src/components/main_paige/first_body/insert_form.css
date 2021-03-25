@@ -1,0 +1,122 @@
+.insert-form-header {
+    margin: 28px 0px 40px 0px;
+}
+
+.fb-wr-insert-form-container {
+    /*padding: 30px 50px 30px 40px;*/
+    align-content: center;
+    position: relative;
+    /*flex: 1;*/
+    width: inherit;
+}
+
+.fb-wr-insert-form-label {
+    text-transform: uppercase;
+    font-size: 2.7rem;
+    font-weight: 700;
+    margin: 10px 0 0 10px;
+    text-align: center;
+}
+
+.insert-form {
+    /*padding: 10px;*/
+    /*margin-left: 10px;*/
+    /*margin-right: 10px;*/
+    /*width: inherit;*/
+    width: 100%;
+    /*display: flex;*/
+    /*flex-wrap: wrap;*/
+    /*align-items: flex-end;*/
+    /*text-align: left;*/
+}
+
+.insert-form-button {
+    box-sizing: border-box;
+    color: #000000 !important;
+    border-width: 2px;
+    border-style: solid;
+    border-color: black;
+    font-weight: 500;
+    font-size: 17px;
+    text-transform: uppercase;
+    background-color: transparent;
+    min-height: 40px;
+    width: 100%;
+    align-content: center;
+    margin-top: 1px;
+    margin-bottom: 30px;
+    /*position: relative;*/
+    display: inline-block;
+    font-family: inherit;
+    font-style: initial;
+    white-space: nowrap;
+    line-height: inherit;
+    cursor: pointer;
+    user-select: none;
+    vertical-align: middle;
+    text-align: center;
+    padding: 25px 10px;
+    border-radius: 0;
+    /*align-self: flex-start;*/
+    position: relative;
+}
+
+.red-boarder {
+    border-width: 2px;
+    border-style: solid;
+    border-color: red;
+}
+
+.submit-button-label {
+    /*margin: 160px auto auto auto;*/
+    /*position:fixed;*/
+    position: absolute;
+    /*top: 75px;*/
+    bottom: 0px;
+    /*right: 0px;*/
+    /*left: 0px;*/
+}
+
+#image, #language-button, #submit {
+    display: none;
+}
+
+.insert-form-langs-container {
+    position: relative;
+}
+
+.insert-form-langs {
+    position: absolute;
+    top: 76px;
+    z-index: 100;
+    width: 100%;
+    /*padding: 26px 10px 10px 10px;*/
+    /*border-width: 2px;*/
+    /*border-style: solid;*/
+    /*border-color: black;*/
+    /*box-sizing: border-box;*/
+}
+
+.insert-form-lang {
+    box-sizing: border-box;
+    color: #000000;
+    border-bottom: black 2px solid;
+    border-left: black 2px solid;
+    border-right: black 2px solid;
+    /*border-width: 2px;*/
+    /*border-style: solid;*/
+    /*border-color: black;*/
+    font-weight: 500;
+    font-size: 17px;
+    text-transform: uppercase;
+    background: white;
+    padding: 25px 10px;
+    min-height: 40px;
+    align-content: center;
+    cursor: pointer;
+}
+
+
+/*.file-button {*/
+/*    */
+/*}*/

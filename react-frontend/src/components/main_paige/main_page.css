@@ -1,0 +1,8 @@
+.splitter {
+    min-height: 100px;
+    background: #e7463f;
+    justify-content: center;
+    display: flex;
+    flex-direction: column;
+    position: relative;
+}

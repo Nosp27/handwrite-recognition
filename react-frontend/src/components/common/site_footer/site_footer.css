@@ -1,0 +1,22 @@
+.footer{
+    background-color: #333333;
+    text-align: center;
+    position: relative;
+    font-family: 'Open Sans',sans-serif;
+    font-size: 1rem;
+    line-height: 1.6;
+}
+
+.footer-text-container {
+    min-height: 99px;
+    color: #ffffff;
+    /*width: 940px;*/
+    /*display: block;*/
+    text-align: center;
+    margin: 0px;
+}
+
+.footer-text {
+    margin: 0px;
+    padding: 45px;
+}
