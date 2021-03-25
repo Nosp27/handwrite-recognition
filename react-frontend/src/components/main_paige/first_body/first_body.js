@@ -44,24 +44,27 @@ class FirstBody extends React.Component {
             return;
             // Красим
         }
+        // window.location.href = "/recognize";
+        //
+        // const file = this.fileInput.current.files[0];
+        // const lang = this.langInput.current.value;
+        //
+        // const reader = new FileReader();
+        // reader.readAsDataURL(file);
+        //
+        // reader.onload = () => {
+        //     const data = reader.result;
+        //
+        fetch("/api/image_submit/", {
+                method: "POST",
+                body: JSON.stringify({"image": this.state.file, "lang": this.state.lang})
+            }
+        );
+        console.log(this.state.file);
+        console.log(this.state.lang);
 
-        const file = this.fileInput.current.files[0];
-        const lang = this.langInput.current.value;
-
-        const reader = new FileReader();
-        reader.readAsDataURL(file);
-
-        reader.onload = () => {
-            const data = reader.result;
-
-            // fetch("http://nosp.top/api/image_submit/", {
-            //         method: "POST",
-            //         body: JSON.stringify({"image": data, "lang": lang})
-            //     }
-            // );
-            console.log(data);
-            console.log(lang);
-        };
+        // window.location.href = "/recognize";
+        // };
     }
 
     render() {

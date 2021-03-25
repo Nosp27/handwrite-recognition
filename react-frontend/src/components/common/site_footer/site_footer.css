@@ -1,10 +1,13 @@
 .footer{
     background-color: #333333;
-    text-align: center;
-    position: relative;
-    font-family: 'Open Sans',sans-serif;
-    font-size: 1rem;
-    line-height: 1.6;
+    /*text-align: center;*/
+    /*position: relative;*/
+    /*position: absolute;*/
+    /*bottom: 0px;*/
+    /*width: 100%;*/
+    align-self: end;
+    /*position:fixed;*/
+    /*bottom: 0px;*/
 }
 
 .footer-text-container {
@@ -12,11 +15,14 @@
     color: #ffffff;
     /*width: 940px;*/
     /*display: block;*/
-    text-align: center;
     margin: 0px;
 }
 
 .footer-text {
+    text-align: center;
     margin: 0px;
     padding: 45px;
+    font-family: 'Open Sans',sans-serif;
+    font-size: 1rem;
+    line-height: 1.6;
 }
