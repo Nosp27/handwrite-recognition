@@ -1,4 +1,4 @@
 FROM node
 COPY . /react-frontend
-RUN npm install
-ENTRYPOINT ["npm", "start"]
+RUN cd /react-frontend && npm install
+ENTRYPOINT cd /react-frontend && npm start
