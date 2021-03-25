@@ -15,6 +15,8 @@ services:
     environment:
       - TESSDATA_PREFIX=/ml/share/tessdata
     scale: 5
+    depends_on:
+      - queue
   queue:
     image: rabbitmq
     container_name: handwrite_recognition_mq
@@ -28,3 +30,4 @@ services:
     environment:
       - POSTGRES_USER=psql
       - POSTGRES_PASSWORD=somepassword
+
