@@ -1,0 +1,89 @@
+.first-body-container {
+    min-height: 687px;
+    background: #e5e5e5;
+    justify-content: center;
+    display: flex;
+    flex-direction: column;
+    position: relative;
+}
+
+.fb-red-rect {
+    height: 459px;
+    margin-top: 130px;
+    margin-bottom: 0;
+    background: #e7463f;
+    width: 100% !important;
+    margin-left: 0 !important;
+    margin-right: 0 !important;
+    position: relative;
+    box-sizing: border-box;
+    display: block;
+}
+
+.fb-white-rect {
+    z-index: 1000;
+    width: 550px;
+    /*height: 550px;*/
+    min-height: 565px;
+    /*margin-top: -493px;*/
+    /*margin-right: calc(((100% - 940px) / 2));*/
+    margin: -510px 50px 195px calc((100% / 2));
+    padding: 30px 40px 30px 40px;
+    position: relative;
+    flex: 1;
+    max-width: 100%;
+    box-sizing: border-box;
+    display: flex;
+    border-color: #999999;
+    background-color: #ffffff;
+    border-style: solid;
+    border-width: 1px;
+    text-align: left;
+    box-shadow: 0 0 10px rgba(0,0,0,0.5);
+}
+
+.fb-repeated-notes {
+    width: 500px;
+    /*height: 550px;*/
+    min-height: 400px;
+    /*margin-top: -493px;*/
+    /*margin-right: calc(((100% - 940px) / 2));*/
+    margin: -708px 50px 195px 200px;
+    padding: 30px 40px 30px 40px;
+    position: relative;
+    max-width: 100%;
+    box-sizing: border-box;
+    border-color: #999999;
+    background-color: #e7463f;
+    text-align: left;
+
+    /*margin-top: 46px;*/
+    /*margin-bottom: 51px;*/
+    /*margin-left: calc(((100% - 720px) / 2));*/
+    /*width: 459px;*/
+    /*min-height: 387px;*/
+    /*display: grid;*/
+
+    /*position: relative;*/
+    /*box-sizing: border-box;*/
+    /*font-size: 1rem;*/
+    /*line-height: 1.6;*/
+
+    /*grid-template-columns: 100%;*/
+    /*height: auto;*/
+    /*flex: 1;*/
+}
+
+.fb-rn-first-text {
+    color: #ffffff;
+    display: flex;
+    flex-direction: column;
+    background-color: #e7463f;
+    display: flex;
+    position: relative;
+    box-sizing: border-box;
+    /*font-family: Roboto,sans-serif;*/
+
+    font-size: 1.25rem;
+    line-height: 1.2;
+}

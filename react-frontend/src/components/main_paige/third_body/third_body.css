@@ -1,0 +1,8 @@
+.third-body-container {
+    min-height: 687px;
+    background: white;
+    justify-content: center;
+    display: flex;
+    flex-direction: column;
+    position: relative;
+}
