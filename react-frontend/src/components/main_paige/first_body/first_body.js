@@ -44,7 +44,6 @@ class FirstBody extends React.Component {
             return;
             // Красим
         }
-        window.location.href = "/recognize";
         //
         // const file = this.fileInput.current.files[0];
         // const lang = this.langInput.current.value;
@@ -60,6 +59,7 @@ class FirstBody extends React.Component {
             if (!result) {
                 throw new Error("Request id cannot be resolved from response");
             }
+            window.location.href = "/recognize?request_id=" + result["request_id"];
             this.setState({"request_id": result["request_id"]});
         });
 
@@ -68,35 +68,6 @@ class FirstBody extends React.Component {
 
         // window.location.href = "/recognize";
         // };
-    }
-
-    componentDidMount() {
-        this.interval = setInterval(
-            () => {
-                if (!this.state.request_id || this.state.result !== undefined) {
-                    return;
-                }
-                fetch(`api/status/?request_id=${this.state.request_id}`)
-                    .then(
-                        response => {
-                            if (response.status === 404)
-                                this.setState({"status": "Not Found"});
-                            return response.json();
-                        }
-                    )
-                    .then(json_data => {
-                        console.log(json_data);
-                        if (json_data["status"] === "done" && json_data["result"]) {
-                            this.setState({"result": json_data["result"]});
-                            alert(this.state.result);
-                        }
-                        this.setState({"status": json_data["status"]});
-                    });
-            }, 3000);
-    }
-
-    componentWillUnmount() {
-        clearInterval(this.interval);
     }
 
     render() {
@@ -117,12 +88,13 @@ class FirstBody extends React.Component {
                                     {this.state.file ? this.state.file.name : '► Загрузить фотографию рукописного текста'}
                                 </div>
                                 {/*<div id="file-name"></div>*/}
-                                <input type="file" id="image" accept="image/*" onChange={this.handleFileChange} ref={this.fileInput} />
+                                <input type="file" id="image" accept="image/*" onChange={this.handleFileChange}
+                                       ref={this.fileInput}/>
                                 <label></label>
                                 {/*<div className="insert-form-button" onClick={this.handleLanguageButtonClick} id="file">*/}
                                 {/*    {this.state.lang ? this.state.lang.name : '► Выбрать язык рукописного текста'}*/}
                                 {/*</div>*/}
-                                <div className="insert-form-langs-container" >
+                                <div className="insert-form-langs-container">
                                     <div className={`insert-form-button ${
                                         !this.state.allDataInserted && !this.state.lang ? 'red-boarder' : ''
                                     }`} onClick={this.handleLanguageButtonClick} id="file">
@@ -136,7 +108,9 @@ class FirstBody extends React.Component {
                                             ].map(({name, code}) => <div
                                                 className={'insert-form-lang'}
                                                 key={code}
-                                                onClick={() => {this.setState({lang: {code, name}, isLangsHidden: true});}}
+                                                onClick={() => {
+                                                    this.setState({lang: {code, name}, isLangsHidden: true});
+                                                }}
                                             >{name}</div>)
                                         }
                                     </div>
