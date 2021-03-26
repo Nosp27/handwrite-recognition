@@ -84,10 +84,15 @@ class FirstBody extends React.Component {
                     return;
                 }
                 fetch(`api/status/?request_id=${this.state.request_id}`)
-                    .then(x => {
-                        if (x.status === 404)
-                            this.setState({"status": "Not Found"});
-                        const json_data = x.json();
+                    .then(
+                        response => {
+                            if (response.status === 404)
+                                this.setState({"status": "Not Found"});
+                            return response.json();
+                        }
+                    )
+                    .then(json_data => {
+                        console.log(json_data);
                         if (json_data["status"] === "done" && json_data["result"]) {
                             this.setState({"result": json_data["result"]});
                             alert(this.state.result);
