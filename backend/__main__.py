@@ -17,5 +17,5 @@ def start():
     aiohttp.web.run_app(web_app, port=8080)
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     main()

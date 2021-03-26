@@ -41,7 +41,7 @@ class Consumer:
         self.notify_backend(request_id=request_id, status="done", result=predicted_text)
         logger.debug(f"Status updated for {request_id}")
 
-    def connect_to_mq(self, max_retries=5):
+    def connect_to_mq(self, *, max_retries, delay):
         retry_num = 0
         while True:
             retry_num += 1
@@ -53,11 +53,11 @@ class Consumer:
                 return connection
             except (pika.exceptions.AMQPConnectionError, socket.gaierror):
                 print(f"Failed to connect to message queue. (Round {retry_num})")
-                time.sleep(5)
+                time.sleep(delay)
         raise Exception(f"Couldn't connect to message queue after {max_retries} retry(ies).")
 
     def listen_queue(self):
-        connection = self.connect_to_mq(max_retries=5)
+        connection = self.connect_to_mq(max_retries=5, delay=10)
         channel = connection.channel()
         channel.queue_declare(queue=QUEUE_NAME, auto_delete=True)
         try:

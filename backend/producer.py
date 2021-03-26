@@ -19,7 +19,9 @@ class RabbitMQProducer(Producer):
         print("Connected to q")
         channel: Channel = await connection.channel()
         print("Resolved channel")
-        message = Message(pickle.dumps({"image": image_bytes, "request_id": request_id, "lang": lang}))
+        message = Message(
+            pickle.dumps({"image": image_bytes, "request_id": request_id, "lang": lang})
+        )
         print("Composed message")
         await channel.default_exchange.publish(message, QUEUE_NAME)
         print("Sent.")
