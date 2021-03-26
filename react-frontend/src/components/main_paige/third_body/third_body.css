@@ -3,6 +3,35 @@
     background: white;
     justify-content: center;
     display: flex;
-    flex-direction: column;
+    /*flex-direction: column;*/
     position: relative;
+}
+
+.tb-photo-container {
+    display: inline;
+    background-repeat: no-repeat;
+    width: 250px;
+    height: 250px;
+    object-fit: scale-down;
+    border: 1px solid #999999;
+    box-shadow: 0 0 10px rgba(0,0,0,0.5);
+    margin-left: 150px;
+    margin-top: 150px;
+}
+
+.Anya {
+    background-image: url("Anya-small.jpg");
+    margin-left: -10px;
+}
+
+.Pasha {
+    background-image: url("Pasha-small.jpg");
+}
+
+.Kolya {
+    background-image: url("Kolya-small.jpg");
+}
+
+.Alena {
+    background-image: url("Alena-small.jpg");
 }

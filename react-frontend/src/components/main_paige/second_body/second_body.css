@@ -6,3 +6,15 @@
     flex-direction: column;
     position: relative;
 }
+
+.sb-photo-container {
+    display:inline-block;
+    background-image: url("beauty-small-500.jpg");
+    background-repeat: no-repeat;
+    width: 500px;
+    height: 500px;
+    object-fit: scale-down;
+    border: 1px solid #999999;
+    box-shadow: 0 0 10px rgba(0,0,0,0.5);
+    margin-left: 200px;
+}
