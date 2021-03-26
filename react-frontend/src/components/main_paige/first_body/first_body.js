@@ -44,9 +44,13 @@ class FirstBody extends React.Component {
         }
 
         console.log('vze');
+<<<<<<< HEAD
         console.log(!this.state.file);
         console.log(this.state.file);
         if (!this.state.file || !this.state.lang) {
+=======
+        if (!this.state.file || !this.state.lang || !this.state.file[0]) {
+>>>>>>> 9ba4a4f1c8375a192d829b25e7911d7accac1947
             this.setState({allDataInserted: false});
             return;
             // Красим
@@ -63,7 +67,11 @@ class FirstBody extends React.Component {
         //     const data = reader.result;
         //
 
+<<<<<<< HEAD
         uploadFile(this.state.file, this.state.lang).then(result => {
+=======
+        uploadFile(file, lang).then(result => {
+>>>>>>> 9ba4a4f1c8375a192d829b25e7911d7accac1947
             if (!result) {
                 throw new Error("Request id cannot be resolved from response");
             }
@@ -78,6 +86,7 @@ class FirstBody extends React.Component {
     }
 
     componentDidMount() {
+<<<<<<< HEAD
         this.interval = setInterval(
             () => {
                 if (!this.state.request_id) {
@@ -93,6 +102,23 @@ class FirstBody extends React.Component {
                         this.setState({"status": json_data["status"]});
                     });
             }, 3000);
+=======
+      this.interval = setInterval(
+          () => {
+              if (!this.state.request_id) {
+                  return;
+              }
+              fetch(`api/status/?request_id=${this.state.request_id}`)
+                  .then(x => {
+                      if (x.status === 404)
+                          this.setState({"status": "Not Found"});
+                      const json_data = x.json();
+                      if (json_data["status"] === "done" && json_data["result"])
+                          this.setState({"result": json_data["result"]});
+                      this.setState({"status": json_data["status"]});
+                  });
+          }, 3000);
+>>>>>>> 9ba4a4f1c8375a192d829b25e7911d7accac1947
     }
 
     componentWillUnmount() {
@@ -173,7 +199,11 @@ async function uploadFile(file, lang) {
         (resolve, reject) => {
             const timeout = setTimeout(function () {
                 document.getElementById("message-place").innerText = "Timeout Error.";
+<<<<<<< HEAD
                 reject(new Error("Request timeout"  ));
+=======
+                reject(new Error("Request timeout"));
+>>>>>>> 9ba4a4f1c8375a192d829b25e7911d7accac1947
             }, 60000);
 
             const reader = new FileReader();
@@ -184,23 +214,34 @@ async function uploadFile(file, lang) {
 
                 fetch("api/image_submit/", {
                         method: "POST",
+<<<<<<< HEAD
                         mode: 'no-cors',
+=======
+>>>>>>> 9ba4a4f1c8375a192d829b25e7911d7accac1947
                         body: JSON.stringify({"image": data, "lang": lang})
                     }
                 )
                     .then(resp => {
                         clearTimeout(timeout);
                         try {
+<<<<<<< HEAD
                             console.log(resp);
+=======
+>>>>>>> 9ba4a4f1c8375a192d829b25e7911d7accac1947
                             const resp_json = resp.json();
                             resolve(resp_json);
                         } catch (e) {
                         }
                     })
                     .catch(x => {
+<<<<<<< HEAD
                         console.error(x);
                         // console.exception(e);
                         // console.error("Server returned: " + resp.status + "; " + resp.text());
+=======
+                        console.exception(e);
+                        console.error("Server returned: " + resp.status + "; " + resp.text());
+>>>>>>> 9ba4a4f1c8375a192d829b25e7911d7accac1947
                         reject(x);
                     });
             };
