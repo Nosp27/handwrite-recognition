@@ -1,5 +1,5 @@
 import React from 'react';
-import {Paragraph} from "./paragraph/paragraph";
+import {Paragraph} from "../../common/paragraph/paragraph";
 
 class FirstBody extends React.Component {
     constructor(props) {
