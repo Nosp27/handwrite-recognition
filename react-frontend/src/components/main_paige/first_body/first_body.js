@@ -38,20 +38,13 @@ class FirstBody extends React.Component {
     handleSubmit(event) {
         event.preventDefault();
 
-        if (!window.File || !window.FileReader || !window.FileList || !window.Blob) {
-            alert('The File APIs are not fully supported in this browser.');
-            return;
-        }
-
         console.log('vze');
-        console.log(!this.state.file);
-        console.log(this.state.file);
         if (!this.state.file || !this.state.lang) {
             this.setState({allDataInserted: false});
             return;
             // Красим
         }
-        // window.location.href = "/recognize";
+        window.location.href = "/recognize";
         //
         // const file = this.fileInput.current.files[0];
         // const lang = this.langInput.current.value;

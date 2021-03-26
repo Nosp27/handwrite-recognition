@@ -42,7 +42,7 @@ class LoginPage extends React.Component {
                                 <Link to={{pathname: "/account", state: login}} className={'button'} >
                                     войти
                                 </Link>
-                                <Link to="/account" className={'button register'}>
+                                <Link to="/registr" className={'button register'}>
                                     зарегистрироваться
                                 </Link>
                             </div>

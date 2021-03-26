@@ -13,9 +13,8 @@ class PhotoText extends React.Component {
     render() {
         return (
             <div className="photo-text">
-                <div className="photo-container" style={{
-                    backgroundImage: `url(${this.state.img})`
-                }}>
+                <div className="photo-container">
+                    <img src={this.state.img}/>
                 </div>
                 <div className="text-container">{this.props.text}</div>
             </div>

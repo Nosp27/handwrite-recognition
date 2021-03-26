@@ -1,7 +1,7 @@
 .rec-page-container {
     /*height: calc(100vh - 115px);*/
     /*width: 100vh;*/
-    height: 100vh;
+    height: calc(100vh - 209px);
     background: #e8e8e8;
     display: grid;
     grid-template-columns: 1fr;
@@ -16,11 +16,15 @@
 /*    !*margin-top: 100px;*!*/
 /*}*/
 
+.rp-main-container {
+    place-self: center center;
+}
+
 .white-rect {
     /*z-index: 1000;*/
-    width: 550px;
-    height: 650px;
-    place-self: center center;
+    width: 600px;
+    height: 450px;
+    /*place-self: center center;*/
     /*margin-left: calc((100%/2 - 225px));*/
     /*min-height: 565px;*/
     /*margin-top: 493px;*/
@@ -34,7 +38,7 @@
     /*display: flex;*/
     background-color: white;
     border: 1px solid #999999;
-    box-shadow: 0 0 40px rgba(0,0,0,0.5);
+    box-shadow: 0 0 20px rgba(0,0,0,0.5);
     font-family: sans-serif;
 }
 
@@ -42,9 +46,50 @@
     text-align: center;
     font-size: 30px;
     margin-bottom: 20px;
+    text-transform: uppercase;
 }
 
 .text-body {
     font-size: 20px;
     text-align: left;
+}
+
+
+.rp-button {
+    margin-top: 30px;
+    box-sizing: border-box;
+    border-width: 1px;
+    border-style: solid;
+    border-color: black;
+    font-size: 16px;
+    text-transform: uppercase;
+    min-height: 40px;
+    align-content: center;
+    margin-bottom: 30px;
+    display: inline-block;
+    font-style: initial;
+    white-space: nowrap;
+    line-height: inherit;
+    cursor: pointer;
+    user-select: none;
+    vertical-align: middle;
+    text-align: center;
+    padding: 17px 10px;
+    border-radius: 10px;
+    text-decoration: none;
+    background-color: #999999;
+    font-family: sans-serif;
+    font-weight: 500;
+    color: black;
+}
+
+.wrong {
+    width: 200px;
+    background: white;
+}
+
+.other {
+    margin-left: 201px;
+    background: #e7463f;
+    width: 280px;
 }
