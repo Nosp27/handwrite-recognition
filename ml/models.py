@@ -28,6 +28,8 @@ class TestModel(BaseModel):
 
 class TesseractModel(BaseModel):
     def predict(self, data, lang) -> str:
+        assert isinstance(data, str), "Image data is not str"
+        assert isinstance(lang, str), "Lang is not str"
         img = Image.open(BytesIO(base64.decodebytes(data.split(",", 2)[-1].encode())))
         result = pytesseract.image_to_string(img, lang=lang)
-        return result 
+        return result

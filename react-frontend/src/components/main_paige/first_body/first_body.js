@@ -63,7 +63,7 @@ class FirstBody extends React.Component {
         //     const data = reader.result;
         //
 
-        uploadFile(this.state.file, this.state.lang).then(result => {
+        uploadFile(this.state.file, this.state.lang.code).then(result => {
             if (!result) {
                 throw new Error("Request id cannot be resolved from response");
             }
@@ -80,7 +80,7 @@ class FirstBody extends React.Component {
     componentDidMount() {
         this.interval = setInterval(
             () => {
-                if (!this.state.request_id) {
+                if (!this.state.request_id || this.state.result !== undefined) {
                     return;
                 }
                 fetch(`api/status/?request_id=${this.state.request_id}`)
@@ -88,8 +88,10 @@ class FirstBody extends React.Component {
                         if (x.status === 404)
                             this.setState({"status": "Not Found"});
                         const json_data = x.json();
-                        if (json_data["status"] === "done" && json_data["result"])
+                        if (json_data["status"] === "done" && json_data["result"]) {
                             this.setState({"result": json_data["result"]});
+                            alert(this.state.result);
+                        }
                         this.setState({"status": json_data["status"]});
                     });
             }, 3000);
@@ -132,7 +134,7 @@ class FirstBody extends React.Component {
                                         {
                                             [
                                                 {name: 'Английский', code: 'eng'},
-                                                {name: 'Итальянский', code: 'italian'}
+                                                {name: 'Русский', code: 'rus'}
                                             ].map(({name, code}) => <div
                                                 className={'insert-form-lang'}
                                                 key={code}
@@ -195,6 +197,7 @@ async function uploadFile(file, lang) {
                             const resp_json = resp.json();
                             resolve(resp_json);
                         } catch (e) {
+                            reject(e);
                         }
                     })
                     .catch(x => {
