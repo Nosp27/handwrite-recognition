@@ -50,8 +50,7 @@ class RecognizePage extends React.Component {
                         <div className="white-rect">
                             <div className="text-title">Статус</div>
                             <div className="text-body">{this.state.status ? this.state.status : "Ожидание статуса..."}</div>
-                        </div>
-                        <div className="white-rect">
+                            <br/><br/>
                             <div className="text-title">Распознанный текст</div>
                             <div className="text-body">{this.state.result ? this.state.result : "Подождите..."}</div>
                         </div>
@@ -62,7 +61,6 @@ class RecognizePage extends React.Component {
                             РАСПОЗНАТЬ ДРУГОЙ ТЕКСТ
                         </Link>
                     </div>
-
                 </div>
             </React.StrictMode>
         );
