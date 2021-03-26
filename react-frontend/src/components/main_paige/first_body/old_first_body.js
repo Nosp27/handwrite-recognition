@@ -38,14 +38,7 @@ class FirstBody extends React.Component {
     handleSubmit(event) {
         event.preventDefault();
 
-        if (!window.File || !window.FileReader || !window.FileList || !window.Blob) {
-            alert('The File APIs are not fully supported in this browser.');
-            return;
-        }
-
         console.log('vze');
-        console.log(!this.state.file);
-        console.log(this.state.file);
         if (!this.state.file || !this.state.lang) {
             this.setState({allDataInserted: false});
             return;
@@ -62,41 +55,18 @@ class FirstBody extends React.Component {
         // reader.onload = () => {
         //     const data = reader.result;
         //
-
-        uploadFile(this.state.file, this.state.lang).then(result => {
-            if (!result) {
-                throw new Error("Request id cannot be resolved from response");
+        const d = fetch("/api/image_submit/", {
+                method: "POST",
+                mode:'no-cors',
+                body: JSON.stringify({"image": this.state.file, "lang": this.state.lang})
             }
-            this.setState({"request_id": result["request_id"]});
-        });
-
+        );
         console.log(this.state.file);
         console.log(this.state.lang);
+        console.log(d);
 
         // window.location.href = "/recognize";
         // };
-    }
-
-    componentDidMount() {
-        this.interval = setInterval(
-            () => {
-                if (!this.state.request_id) {
-                    return;
-                }
-                fetch(`api/status/?request_id=${this.state.request_id}`)
-                    .then(x => {
-                        if (x.status === 404)
-                            this.setState({"status": "Not Found"});
-                        const json_data = x.json();
-                        if (json_data["status"] === "done" && json_data["result"])
-                            this.setState({"result": json_data["result"]});
-                        this.setState({"status": json_data["status"]});
-                    });
-            }, 3000);
-    }
-
-    componentWillUnmount() {
-        clearInterval(this.interval);
     }
 
     render() {
@@ -124,8 +94,8 @@ class FirstBody extends React.Component {
                                 {/*</div>*/}
                                 <div className="insert-form-langs-container" >
                                     <div className={`insert-form-button ${
-                                        !this.state.allDataInserted && !this.state.lang ? 'red-boarder' : ''
-                                    }`} onClick={this.handleLanguageButtonClick} id="file">
+                                    !this.state.allDataInserted && !this.state.lang ? 'red-boarder' : ''
+                                }`} onClick={this.handleLanguageButtonClick} id="file">
                                         {this.state.lang ? this.state.lang.name : '► Выбрать язык рукописного текста'}
                                     </div>
                                     <div className="insert-form-langs" hidden={this.state.isLangsHidden}>
@@ -165,47 +135,6 @@ class FirstBody extends React.Component {
             </section>
         );
     }
-}
-
-
-async function uploadFile(file, lang) {
-    return new Promise(
-        (resolve, reject) => {
-            const timeout = setTimeout(function () {
-                document.getElementById("message-place").innerText = "Timeout Error.";
-                reject(new Error("Request timeout"  ));
-            }, 60000);
-
-            const reader = new FileReader();
-            reader.readAsDataURL(file);
-
-            reader.onload = () => {
-                const data = reader.result;
-
-                fetch("api/image_submit/", {
-                        method: "POST",
-                        mode: 'no-cors',
-                        body: JSON.stringify({"image": data, "lang": lang})
-                    }
-                )
-                    .then(resp => {
-                        clearTimeout(timeout);
-                        try {
-                            console.log(resp);
-                            const resp_json = resp.json();
-                            resolve(resp_json);
-                        } catch (e) {
-                        }
-                    })
-                    .catch(x => {
-                        console.error(x);
-                        // console.exception(e);
-                        // console.error("Server returned: " + resp.status + "; " + resp.text());
-                        reject(x);
-                    });
-            };
-        }
-    )
 }
 
 export default FirstBody;

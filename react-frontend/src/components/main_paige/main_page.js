@@ -9,11 +9,13 @@ import '../common/site_footer/site_footer.css';
 import './second_body/second_body.css';
 import './third_body/third_body.css';
 import './main_page.css'
+import SiteHeader from "../common/site_header/site_header";
 
 class MainPage extends React.Component {
     render() {
         return (
             <React.StrictMode>
+                <SiteHeader value="Личный кабинет" />
                 <FirstBody />
                 <SecondBody />
                 <section className="splitter">
