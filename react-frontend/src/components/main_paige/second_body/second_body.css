@@ -1,8 +1,28 @@
 .second-body-container {
     min-height: 687px;
     background: white;
-    justify-content: center;
+    justify-content: left;
     display: flex;
-    flex-direction: column;
+    /*flex-direction: column;*/
     position: relative;
+}
+
+.sb-photo-container {
+    display:inline-block;
+    background-image: url("beauty-small-500.jpg");
+    background-repeat: no-repeat;
+    width: 500px;
+    height: 500px;
+    object-fit: scale-down;
+    border: 1px solid #999999;
+    box-shadow: 0 0 10px rgba(0,0,0,0.5);
+    margin-left: 250px;
+    margin-top: 100px;
+}
+
+.sb-text-container {
+    width: 600px;
+    margin-top: 60px;
+    margin-left: 250px;
+
 }

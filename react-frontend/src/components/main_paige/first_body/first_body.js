@@ -1,5 +1,5 @@
 import React from 'react';
-import {Paragraph} from "./paragraph/paragraph";
+import {Paragraph} from "../../common/paragraph/paragraph";
 
 class FirstBody extends React.Component {
     constructor(props) {
@@ -44,24 +44,30 @@ class FirstBody extends React.Component {
             return;
             // Красим
         }
+        //
+        // const file = this.fileInput.current.files[0];
+        // const lang = this.langInput.current.value;
+        //
+        // const reader = new FileReader();
+        // reader.readAsDataURL(file);
+        //
+        // reader.onload = () => {
+        //     const data = reader.result;
+        //
 
-        const file = this.fileInput.current.files[0];
-        const lang = this.langInput.current.value;
+        uploadFile(this.state.file, this.state.lang.code).then(result => {
+            if (!result) {
+                throw new Error("Request id cannot be resolved from response");
+            }
+            window.location.href = "/recognize?request_id=" + result["request_id"];
+            this.setState({"request_id": result["request_id"]});
+        });
 
-        const reader = new FileReader();
-        reader.readAsDataURL(file);
+        console.log(this.state.file);
+        console.log(this.state.lang);
 
-        reader.onload = () => {
-            const data = reader.result;
-
-            // fetch("http://nosp.top/api/image_submit/", {
-            //         method: "POST",
-            //         body: JSON.stringify({"image": data, "lang": lang})
-            //     }
-            // );
-            console.log(data);
-            console.log(lang);
-        };
+        // window.location.href = "/recognize";
+        // };
     }
 
     render() {
@@ -82,26 +88,29 @@ class FirstBody extends React.Component {
                                     {this.state.file ? this.state.file.name : '► Загрузить фотографию рукописного текста'}
                                 </div>
                                 {/*<div id="file-name"></div>*/}
-                                <input type="file" id="image" accept="image/*" onChange={this.handleFileChange} ref={this.fileInput} />
+                                <input type="file" id="image" accept="image/*" onChange={this.handleFileChange}
+                                       ref={this.fileInput}/>
                                 <label></label>
                                 {/*<div className="insert-form-button" onClick={this.handleLanguageButtonClick} id="file">*/}
                                 {/*    {this.state.lang ? this.state.lang.name : '► Выбрать язык рукописного текста'}*/}
                                 {/*</div>*/}
-                                <div className="insert-form-langs-container" >
+                                <div className="insert-form-langs-container">
                                     <div className={`insert-form-button ${
-                                    !this.state.allDataInserted && !this.state.lang ? 'red-boarder' : ''
-                                }`} onClick={this.handleLanguageButtonClick} id="file">
+                                        !this.state.allDataInserted && !this.state.lang ? 'red-boarder' : ''
+                                    }`} onClick={this.handleLanguageButtonClick} id="file">
                                         {this.state.lang ? this.state.lang.name : '► Выбрать язык рукописного текста'}
                                     </div>
                                     <div className="insert-form-langs" hidden={this.state.isLangsHidden}>
                                         {
                                             [
                                                 {name: 'Английский', code: 'eng'},
-                                                {name: 'Итальянский', code: 'italian'}
+                                                {name: 'Русский', code: 'rus'}
                                             ].map(({name, code}) => <div
                                                 className={'insert-form-lang'}
                                                 key={code}
-                                                onClick={() => {this.setState({lang: {code, name}, isLangsHidden: true});}}
+                                                onClick={() => {
+                                                    this.setState({lang: {code, name}, isLangsHidden: true});
+                                                }}
                                             >{name}</div>)
                                         }
                                     </div>
@@ -130,6 +139,48 @@ class FirstBody extends React.Component {
             </section>
         );
     }
+}
+
+
+async function uploadFile(file, lang) {
+    return new Promise(
+        (resolve, reject) => {
+            const timeout = setTimeout(function () {
+                document.getElementById("message-place").innerText = "Timeout Error.";
+                reject(new Error("Request timeout"  ));
+            }, 60000);
+
+            const reader = new FileReader();
+            reader.readAsDataURL(file);
+
+            reader.onload = () => {
+                const data = reader.result;
+
+                fetch("api/image_submit/", {
+                        method: "POST",
+                        mode: 'no-cors',
+                        body: JSON.stringify({"image": data, "lang": lang})
+                    }
+                )
+                    .then(resp => {
+                        clearTimeout(timeout);
+                        try {
+                            console.log(resp);
+                            const resp_json = resp.json();
+                            resolve(resp_json);
+                        } catch (e) {
+                            reject(e);
+                        }
+                    })
+                    .catch(x => {
+                        console.error(x);
+                        // console.exception(e);
+                        // console.error("Server returned: " + resp.status + "; " + resp.text());
+                        reject(x);
+                    });
+            };
+        }
+    )
 }
 
 export default FirstBody;

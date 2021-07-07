@@ -2,6 +2,13 @@ import React from 'react';
 import { Link } from "react-router-dom";
 
 class SiteHeader extends React.Component {
+    constructor(props) {
+        super(props);
+        this.state = {
+            value: this.props.value
+        }
+    }
+
     render() {
         return (
             <header className="header" >
@@ -14,7 +21,7 @@ class SiteHeader extends React.Component {
                             <ul className="header-navigation">
                                 <li className="header-login-list">
                                     <Link to="/login" className="login-button" style={{padding: "10px 20px   "}}>
-                                        Личный кабинет
+                                        {this.props.value}
                                     </Link>
                                 </li>
                             </ul>

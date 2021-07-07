@@ -32,7 +32,10 @@ class Consumer:
         image = message_data["image"]
         request_id = message_data["request_id"]
         lang = message_data["lang"]
+        logger.warning("Lang: " + lang)
         self.notify_backend(request_id=request_id, status="processing")
+        with open("/tmp/img_log.log", "a") as f:
+            f.write(f"image: {type(image)}")
         predicted_text = self.model.predict(image, lang)
         logger.debug(f"Sending status update for {request_id}...")
         self.notify_backend(request_id=request_id, status="done", result=predicted_text)
@@ -67,7 +70,9 @@ class Consumer:
                     channel.basic_ack(method_frame.delivery_tag)
                     logger.debug("Processed message from queue")
                 except Exception as exc:
-                    logger.exception("Could not process queue message", exc_info=(type(exc), exc, None))
+                    logger.exception("Could not process queue message", exc_info=exc)
+                    import traceback
+                    traceback.print_exc(10, open("/tmp/exc.log", "a"))
                     self.notify_backend(
                         request_id=message_data.get("request_id", "unknown"),
                         status=f"ML error: {type(exc)} {str(exc)}",

@@ -1,8 +1,8 @@
 .header {
-    top: 0;
-    right: 0;
-    left: 0;
-    background-color: transparent !important;
+    /*top: 0;*/
+    /*right: 0;*/
+    /*left: 0;*/
+    background-color: white !important;
     background-image: none !important;
     min-height: 40px;
     margin: 15px auto 0px 0px;
