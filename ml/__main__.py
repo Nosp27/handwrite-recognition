@@ -1,4 +1,5 @@
 import os
+from multiprocessing.pool import Pool
 
 import click as click
 
@@ -33,6 +34,13 @@ def start(model, config_file):
     else:
         config = None
         print(f"No config")
+
+    num_workers = (config or {}).get("num_workers", 1)
+    with Pool(num_workers) as pool:
+        pool.starmap(consume, [(model, config)] * num_workers)
+
+
+def consume(model, config):
     consumer = consumers.Consumer(model, config)
     consumer.listen_queue()
 

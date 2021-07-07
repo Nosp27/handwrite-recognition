@@ -7,9 +7,11 @@ import pickle
 from . import models
 import requests
 import logging
+import random
 
 
 logger = logging.getLogger("consumer")
+random_number = random.randint(0, 1000)
 
 
 class Consumer:
@@ -54,29 +56,33 @@ class Consumer:
         raise Exception(f"Couldn't connect to message queue after {max_retries} retry(ies).")
 
     def listen_queue(self):
-        connection = self.connect_to_mq(max_retries=5, delay=10)
-        channel = connection.channel()
-        channel.queue_declare(queue=QUEUE_NAME, auto_delete=True)
-        try:
-            logger.debug("Listening queue")
-            for method_frame, properties, body in channel.consume(QUEUE_NAME):
-                message_data = {}
-                try:
-                    message_data = self.parse_message(body)
-                    self.consumer_got_image(message_data)
-                    channel.basic_ack(method_frame.delivery_tag)
-                    logger.debug("Processed message from queue")
-                except Exception as exc:
-                    logger.exception("Could not process queue message", exc_info=(type(exc), exc, None))
-                    self.notify_backend(
-                        request_id=message_data.get("request_id", "unknown"),
-                        status=f"ML error: {type(exc)} {str(exc)}",
-                    )
-        finally:
-            logger.warning("Closing connection to queue. exit.")
-            connection.close()
+        while True:
+            connection = self.connect_to_mq(max_retries=5, delay=10)
+            channel = connection.channel()
+            channel.queue_declare(queue=QUEUE_NAME, auto_delete=True)
+            try:
+                logger.debug("Listening queue")
+                for method_frame, properties, body in channel.consume(QUEUE_NAME):
+                    message_data = {}
+                    try:
+                        message_data = self.parse_message(body)
+                        self.consumer_got_image(message_data)
+                        channel.basic_ack(method_frame.delivery_tag)
+                        logger.debug("Processed message from queue")
+                    except Exception as exc:
+                        logger.exception("Could not process queue message", exc_info=(type(exc), exc, None))
+                        self.notify_backend(
+                            request_id=message_data.get("request_id", "unknown"),
+                            status=f"ML error: {type(exc)} {str(exc)}",
+                        )
+            finally:
+                logger.warning("Closing connection to queue. exit.")
+                connection.close()
+            logger.warning("Reconnecting...")
 
     def notify_backend(self, request_id, status, **kwargs):
+        with open("/tmp/x.log", "a") as f:
+            f.write(f"{time.time()} executor #{random_number}\n")
         response = requests.post(
             "http://backend:8080/api/status/", json={"request_id": request_id, "status": status, **kwargs}
         )

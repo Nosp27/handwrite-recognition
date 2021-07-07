@@ -6,4 +6,4 @@ RUN pip install -r /ml/requirements.txt && \
     apt-get install -y tesseract-ocr && \
     apt-get install -y libtesseract-dev
 EXPOSE 1234
-ENTRYPOINT ["python", "-m", "ml", "start", "--model", "TesseractModel"]
+ENTRYPOINT ["python", "-m", "ml", "start", "--model", "TesseractModel", "--config-file", "ml/share/ml_conf.json"]
